@@ -1,0 +1,480 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;400&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+html,
+body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden
+}
+
+section {
+    width: 100%;
+    height: 100vh;
+    background: #003241;
+    background-size: 700% 700%;
+    position: absolute;
+    animation: bg-animation 7.5s ease-in-out infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+box {
+    color: #fff;
+    padding: 1.5vw;
+    border-radius: 10px;
+    text-align: center;
+    width: 50%;
+    display: block;
+    position: inherit;
+    top: 40%;
+}
+
+#emailIcon {
+    cursor: pointer;
+}
+
+.icon_holder {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    width: 25%;
+    top: 150%;
+}
+
+.icon_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.icon_image {
+    color: white;
+    width: 40px;
+    height: auto;
+    transition: all 0.3s ease;
+}
+
+.icon_image:hover {
+    transform: scale(1.1);
+    color: #007acc;
+    filter: drop-shadow(0 0 10px rgba(0, 122, 204, 0.5));
+}
+
+.icon_description {
+    color: white;
+    font-family: 'JetBrains Mono', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 200;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.responsive_image {
+    width: 100%;
+    max-width: 550px;
+    height: auto;
+    position: absolute;
+    top: 130%;
+    border-radius: 5%;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+    background-color: #003241;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.close-button {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+}
+
+.close-button:hover {
+    color: #ccc;
+}
+
+.modal-content h2 {
+    color: white;
+    font-family: 'JetBrains Mono', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    color: white;
+    font-family: 'JetBrains Mono', sans-serif;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    font-weight: 400;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'JetBrains Mono', sans-serif;
+    font-size: 0.9rem;
+    background-color: white;
+    color: #003241;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #007acc;
+    box-shadow: 0 0 5px rgba(0, 122, 204, 0.5);
+}
+
+.submit-btn {
+    background-color: #007acc;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    font-family: 'JetBrains Mono', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #005a9e;
+}
+
+.lp_title {
+    font-size: 4.5vw;
+    font-family: 'JetBrains Mono', sans-serif;
+}
+
+.lp_subtitle {
+    font-size: 2.5vw;
+    font-family: 'JetBrains Mono', sans-serif;
+}
+
+.typewriter {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: text-forward 2.5s ease-in-out alternate 1;
+}
+
+/* Custom Alert Styles */
+.custom-alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    min-width: 320px;
+    max-width: 500px;
+    background: #003241;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    border-left: 5px solid #007acc;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.custom-alert.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.custom-alert.success {
+    border-left-color: #28a745;
+}
+
+.custom-alert.error {
+    border-left-color: #dc3545;
+}
+
+.custom-alert.warning {
+    border-left-color: #ffc107;
+}
+
+.alert-content {
+    padding: 0;
+}
+
+.alert-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.alert-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: white;
+    font-family: 'JetBrains Mono', sans-serif;
+}
+
+.alert-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    font-family: 'JetBrains Mono', sans-serif;
+}
+
+.alert-close:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.alert-body {
+    padding: 10px 20px 20px;
+}
+
+.alert-body p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+    font-family: 'JetBrains Mono', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 200;
+}
+
+/* Success alert specific styles */
+.custom-alert.success .alert-header h3 {
+    color: #28a745;
+}
+
+/* Error alert specific styles */
+.custom-alert.error .alert-header h3 {
+    color: #dc3545;
+}
+
+/* Warning alert specific styles */
+.custom-alert.warning .alert-header h3 {
+    color: #ffc107;
+}
+
+/* Loading state for submit button */
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@keyframes cursor {
+    0%,
+    100% {
+        border-right: 4px solid #fff;
+    }
+}
+
+@keyframes text-forward {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes bg-animation {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+@keyframes start {
+    100% {
+        top: 5%;
+    }
+}
+
+@keyframes center {
+    100% {
+        top: 35%;
+    }
+}
+
+@keyframes end {
+    100% {
+        top: 89%;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .responsive_image {
+        width: 85%;
+    }
+
+    .lp_title {
+        font-size: 7.5vw;
+    }
+
+    .lp_subtitle {
+        font-size: 5.5vw;
+    }
+
+    .icon_holder {
+        width: 80%;
+    }
+
+    /* Full-screen modal for mobile */
+    .modal {
+        background-color: #003241;
+        padding: 0;
+    }
+
+    .modal-content {
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        padding: 20px;
+        border-radius: 0;
+        box-shadow: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        overflow-y: auto;
+        box-sizing: border-box;
+    }
+
+    .modal-content h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        margin-top: 40px;
+        padding-right: 40px;
+        text-align: center;
+    }
+
+    .close-button {
+        font-size: 30px;
+        right: 20px;
+        top: 20px;
+        z-index: 1001;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 12px;
+        font-size: 0.9rem;
+        border-radius: 8px;
+    }
+
+    .form-group textarea {
+        min-height: 80px;
+        resize: vertical;
+    }
+
+    .submit-btn {
+        padding: 15px 30px;
+        font-size: 0.9rem;
+        margin-top: 20px;
+        border-radius: 8px;
+    }
+
+    box {
+        width: 80%;
+    }
+
+    /* Custom alert mobile adjustments */
+    .custom-alert {
+        right: 10px;
+        left: 10px;
+        min-width: auto;
+        max-width: none;
+        top: 10px;
+        z-index: 10001;
+    }
+
+    .alert-header h3 {
+        font-size: 1rem;
+    }
+
+    .alert-body p {
+        font-size: 0.8rem;
+    }
+
+    @keyframes center {
+        100% {
+            top: 25%
+        }
+    }
+
+    @keyframes end {
+        100% {
+            top: 70%
+        }
+    }
+}
+
+/* Tablet and larger screens keep the original modal behavior */
+@media only screen and (min-width: 769px) {
+    .modal-content {
+        max-width: 500px;
+    }
+}

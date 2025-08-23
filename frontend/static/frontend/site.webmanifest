@@ -1,0 +1,21 @@
+{
+    "name": "Giacomo Zanotti Backend Developer",
+    "short_name": "G. Zanotti",
+    "icons": [
+        {
+            "src": "images/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "images/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "background_color": "#003241",
+    "theme_color": "#003241",
+    "display": "standalone",
+    "start_url": "/",
+    "id": "gzbedeveloper-app"
+}

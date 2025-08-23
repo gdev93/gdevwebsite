@@ -1,0 +1,83 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ site_title }}</title>
+    <meta name="description" content="{{ site_description }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'frontend/images/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'frontend/images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'frontend/images/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'frontend/site.webmanifest' %}">
+    <link rel="stylesheet" href="{% static 'frontend/css/landingpage.css' %}">
+    <script src="https://kit.fontawesome.com/4b024cbd6a.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+<section>
+    <box>
+        <h1 class="lp_title typewriter" id="main-title">{{ site_title }}</h1>
+        <h2 class="lp_subtitle typewriter" id="sub-title">{{ site_subtitle }}</h2>
+    </box>
+    <img src="https://media.giphy.com/media/qgQUggAC3Pfv687qPC/giphy.gif" class="responsive_image"/>
+    <div class="icon_holder">
+        <span class="icon_item">
+            <a href="https://github.com/SamTheOracle" target="_blank">
+                <i class="fa fa-github icon_image fa-3x"></i>
+            </a>
+            <span class="icon_description">GitHub</span>
+        </span>
+        <span class="icon_item">
+            <a href="https://www.linkedin.com/in/giacomozanotti/" target="_blank">
+                <i class="fa-brands fa-linkedin icon_image fa-3x"></i>
+            </a>
+            <span class="icon_description">LinkedIn</span>
+        </span>
+        <span class="icon_item" id="emailIcon">
+            <i class="fa-solid fa-envelope icon_image fa-3x" onclick="openEmailModal()"></i>
+            <span class="icon_description">Contact</span>
+        </span>
+        <span class="icon_item" id="downloadIcon">
+            <a href="{% static 'frontend/docs/cv_giacomozanotti.pdf' %}" target="_blank" rel="noopener noreferrer">
+                <i class="fa-solid fa-file-pdf icon_image fa-3x"></i>
+            </a>
+            <span class="icon_description">Resume</span>
+        </span>
+    </div>
+</section>
+
+<!-- Email Modal -->
+<div id="emailModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeEmailModal()">&times;</span>
+        <h2>Contact Me</h2>
+        <form id="contactForm" method="POST" action="{% url 'contact_api' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+    </div>
+</div>
+
+<!-- Load JavaScript at the end for better performance -->
+<script src="{% static 'frontend/js/landingpage.js' %}"></script>
+
+</body>
+
+</html>
