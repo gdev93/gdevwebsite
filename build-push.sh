@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Build and Push Script for gdevwebsite Docker Image
-# Usage: ./build-and-push.sh [tag]
+# Usage: ./build-and-push.sh
 
 set -e  # Exit on any error
 
 # Configuration
 IMAGE_NAME="giacomodev93/gdevwebsite"
-DEFAULT_TAG="1.0.0"
+VERSION_FILE="version"
 DOCKERFILE="Dockerfile"
 
 # Colors for output
@@ -34,11 +34,37 @@ log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-# Get tag from argument or use default
-TAG=${1:-$DEFAULT_TAG}
-FULL_IMAGE_NAME="${IMAGE_NAME}:${TAG}"
+# Function to increment version
+increment_version() {
+    local version=$1
+    local major minor patch
+
+    # Split version into components
+    IFS='.' read -r major minor patch <<< "$version"
+
+    # Increment patch version
+    patch=$((patch + 1))
+
+    echo "${major}.${minor}.${patch}"
+}
+
+# Check if version file exists
+if [ ! -f "$VERSION_FILE" ]; then
+    log_error "Version file '$VERSION_FILE' not found"
+    exit 1
+fi
+
+# Read current version from file
+CURRENT_VERSION=$(cat "$VERSION_FILE" | tr -d '[:space:]')
+if [ -z "$CURRENT_VERSION" ]; then
+    log_error "Version file is empty"
+    exit 1
+fi
+
+FULL_IMAGE_NAME="${IMAGE_NAME}:${CURRENT_VERSION}"
 
 log_info "Starting build and push process for ${FULL_IMAGE_NAME}"
+log_info "Current version: ${CURRENT_VERSION}"
 
 # Check if Docker is running
 if ! docker info >/dev/null 2>&1; then
@@ -52,13 +78,20 @@ if [ ! -f "$DOCKERFILE" ]; then
     exit 1
 fi
 
-# Build the image
+# Build and push the image
 log_info "Building and pushing docker image: ${FULL_IMAGE_NAME}"
 if docker buildx build --push --platform linux/amd64,linux/arm64 -t "${FULL_IMAGE_NAME}" -f "$DOCKERFILE" .; then
     log_success "Docker image built and pushed successfully"
+
+    # Increment version and update file
+    NEW_VERSION=$(increment_version "$CURRENT_VERSION")
+    echo "$NEW_VERSION" > "$VERSION_FILE"
+    log_success "Version incremented from ${CURRENT_VERSION} to ${NEW_VERSION}"
+
 else
-    log_error "Failed to build Docker image"
+    log_error "Failed to build and push Docker image"
     exit 1
 fi
 
 log_success "All done! 🚀"
+log_info "Next build will use version: ${NEW_VERSION}"
