@@ -1,7 +1,9 @@
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.http import require_http_methods
-from telegrambot.sender import send_contact_notification
 import logging
+
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+
+from telegrambot.sender import send_contact_notification
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -13,6 +15,9 @@ def contact_api(request):
     API endpoint to handle contact form submissions.
     Simply accepts form data and returns 204 No Content.
     """
+    honey_pot = request.POST.get('nickname', '')
+    if honey_pot:
+        return JsonResponse({'success': False, 'message': ''}, status=403)
     try:
         name = request.POST.get('name', '')
         email = request.POST.get('email', '')

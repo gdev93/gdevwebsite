@@ -311,6 +311,10 @@ box {
     cursor: not-allowed;
 }
 
+.form-group-honeypot {
+    display: none;
+}
+
 @keyframes cursor {
     0%,
     100% {
