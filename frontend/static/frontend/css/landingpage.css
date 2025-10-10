@@ -310,11 +310,6 @@ box {
     opacity: 0.6;
     cursor: not-allowed;
 }
-
-.form-group-honeypot {
-    display: none;
-}
-
 @keyframes cursor {
     0%,
     100% {

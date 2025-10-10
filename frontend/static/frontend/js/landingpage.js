@@ -2,11 +2,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
     const box = document.getElementsByTagName("box")[0]
     const imageHolder = document.getElementsByClassName("responsive_image")[0]
     const iconHolder = document.getElementsByClassName("icon_holder")[0]
-    
+
     setTimeout(() => {
-        box.style.animation = 'start ease-in-out 1s 1'
-        box.style.animationFillMode = 'forwards'
-    },
+            box.style.animation = 'start ease-in-out 1s 1'
+            box.style.animationFillMode = 'forwards'
+        },
         2600);
 
     setTimeout(() => {
@@ -18,6 +18,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
         iconHolder.style.animation = 'end ease-in-out 1s 1'
         iconHolder.style.animationFillMode = 'forwards'
     }, 2950);
+
+    hideNicknameFormGroup();
 
 });
 
@@ -34,7 +36,7 @@ function closeEmailModal() {
 }
 
 // Close modal when clicking outside of it
-window.onclick = function(event) {
+window.onclick = function (event) {
     const modal = document.getElementById('emailModal');
     if (event.target === modal) {
         closeEmailModal();
@@ -42,7 +44,7 @@ window.onclick = function(event) {
 }
 
 // Close modal with Escape key
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') {
         closeEmailModal();
     }
@@ -62,14 +64,14 @@ function closeEmailModal() {
 }
 
 // Close modal when clicking outside of it
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target === modal) {
         modal.style.display = 'none';
     }
 }
 
 // Handle form submission
-document.getElementById('contactForm').addEventListener('submit', function(e) {
+document.getElementById('contactForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
     const formData = new FormData(this);
@@ -87,35 +89,35 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
             'X-CSRFToken': formData.get('csrfmiddlewaretoken')
         }
     })
-    .then(response => response.json())
-    .then(data => {
-        // Close the modal first
-        closeEmailModal();
+        .then(response => response.json())
+        .then(data => {
+            // Close the modal first
+            closeEmailModal();
 
-        // Show custom alert based on response
-        if (data.success) {
-            showCustomAlert('✅ Success!', 'Your message has been sent successfully. I\'ll get back to you soon!', 'success');
-        } else {
-            showCustomAlert('❌ Error', data.message || 'There was an error sending your message. Please try again.', 'error');
-        }
+            // Show custom alert based on response
+            if (data.success) {
+                showCustomAlert('✅ Success!', 'Your message has been sent successfully. I\'ll get back to you soon!', 'success');
+            } else {
+                showCustomAlert('❌ Error', data.message || 'There was an error sending your message. Please try again.', 'error');
+            }
 
-        // Reset form
-        this.reset();
-    })
-    .catch(error => {
-        console.error('Error:', error);
+            // Reset form
+            this.reset();
+        })
+        .catch(error => {
+            console.error('Error:', error);
 
-        // Close the modal
-        closeEmailModal();
+            // Close the modal
+            closeEmailModal();
 
-        // Show error alert
-        showCustomAlert('❌ Error', 'There was an error sending your message. Please try again.', 'error');
-    })
-    .finally(() => {
-        // Re-enable submit button
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Send Message';
-    });
+            // Show error alert
+            showCustomAlert('❌ Error', 'There was an error sending your message. Please try again.', 'error');
+        })
+        .finally(() => {
+            // Re-enable submit button
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Message';
+        });
 });
 
 // Custom alert function
@@ -166,5 +168,16 @@ function closeCustomAlert() {
         }, 300);
     }
 }
-// Other landing page JavaScript
+
+function hideNicknameFormGroup() {
+    const nicknameInput = document.querySelector('input[name="nickname"]');
+
+    if (nicknameInput) {
+        nicknameInput.parentElement.style.display = 'none';
+    } else {
+        console.error('Nickname input element not found on the page.');
+        return false;
+    }
+}
+
 console.log('Landing page JavaScript loaded');
