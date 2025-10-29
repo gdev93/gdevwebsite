@@ -19,7 +19,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         iconHolder.style.animationFillMode = 'forwards'
     }, 2950);
 
-    hideNicknameFormGroup();
+    handleContact();
 
 });
 
@@ -169,14 +169,11 @@ function closeCustomAlert() {
     }
 }
 
-function hideNicknameFormGroup() {
-    const nicknameInput = document.querySelector('input[name="nickname"]');
+function handleContact() {
+    const professionInput = document.querySelector('input[name="profession"]');
 
-    if (nicknameInput) {
-        nicknameInput.parentElement.style.display = 'none';
-    } else {
-        console.error('Nickname input element not found on the page.');
-        return false;
+    if (professionInput) {
+        professionInput.parentElement.style.display = 'none';
     }
 }
 

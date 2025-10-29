@@ -15,8 +15,9 @@ def contact_api(request):
     API endpoint to handle contact form submissions.
     Simply accepts form data and returns 204 No Content.
     """
-    honey_pot = request.POST.get('nickname', '')
+    honey_pot = request.POST.get('profession', '')
     if honey_pot:
+        logger.info(f"🔥 HONEYPOT DETECTED! from request: {request.POST} 🔥")
         return JsonResponse({'success': False, 'message': ''}, status=403)
     try:
         name = request.POST.get('name', '')
