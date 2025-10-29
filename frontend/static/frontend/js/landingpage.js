@@ -19,8 +19,66 @@ window.addEventListener('DOMContentLoaded', (event) => {
         iconHolder.style.animationFillMode = 'forwards'
     }, 2950);
 
-    handleContact();
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            closeEmailModal();
+        }
+    });
 
+    document.getElementById('contactForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const challengeAnswer = document.getElementById('challenge').value.trim();
+
+        if (challengeAnswer !== '4') {
+            e.preventDefault();
+            showCustomAlert('❌ Error', '‼️ Please answer the math question correctly ‼️', 'error');
+            return false;
+        }
+        const formData = new FormData(this);
+        const submitBtn = this.querySelector('.submit-btn');
+
+        // Disable submit button and show loading state
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+
+        // Send the form data
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Close the modal first
+                closeEmailModal();
+
+                // Show custom alert based on response
+                if (data.success) {
+                    showCustomAlert('✅ Success!', 'Your message has been sent successfully. I\'ll get back to you soon!', 'success');
+                } else {
+                    showCustomAlert('❌ Error', data.message || 'There was an error sending your message. Please try again.', 'error');
+                }
+
+                // Reset form
+                this.reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+
+                // Close the modal
+                closeEmailModal();
+
+                // Show error alert
+                showCustomAlert('❌ Error', 'There was an error sending your message. Please try again.', 'error');
+            })
+            .finally(() => {
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
+            });
+    });
 });
 
 
@@ -42,83 +100,6 @@ window.onclick = function (event) {
         closeEmailModal();
     }
 }
-
-// Close modal with Escape key
-document.addEventListener('keydown', function (event) {
-    if (event.key === 'Escape') {
-        closeEmailModal();
-    }
-});
-// Get modal elements
-const modal = document.getElementById('emailModal');
-const emailIcon = document.getElementById('emailIcon');
-
-// Function to open email modal
-function openEmailModal() {
-    modal.style.display = 'block';
-}
-
-// Function to close email modal
-function closeEmailModal() {
-    modal.style.display = 'none';
-}
-
-// Close modal when clicking outside of it
-window.onclick = function (event) {
-    if (event.target === modal) {
-        modal.style.display = 'none';
-    }
-}
-
-// Handle form submission
-document.getElementById('contactForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const formData = new FormData(this);
-    const submitBtn = this.querySelector('.submit-btn');
-
-    // Disable submit button and show loading state
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
-
-    // Send the form data
-    fetch(this.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            // Close the modal first
-            closeEmailModal();
-
-            // Show custom alert based on response
-            if (data.success) {
-                showCustomAlert('✅ Success!', 'Your message has been sent successfully. I\'ll get back to you soon!', 'success');
-            } else {
-                showCustomAlert('❌ Error', data.message || 'There was an error sending your message. Please try again.', 'error');
-            }
-
-            // Reset form
-            this.reset();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-
-            // Close the modal
-            closeEmailModal();
-
-            // Show error alert
-            showCustomAlert('❌ Error', 'There was an error sending your message. Please try again.', 'error');
-        })
-        .finally(() => {
-            // Re-enable submit button
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Send Message';
-        });
-});
 
 // Custom alert function
 function showCustomAlert(title, message, type = 'info') {
@@ -166,14 +147,6 @@ function closeCustomAlert() {
         setTimeout(() => {
             alert.remove();
         }, 300);
-    }
-}
-
-function handleContact() {
-    const professionInput = document.querySelector('input[name="profession"]');
-
-    if (professionInput) {
-        professionInput.parentElement.style.display = 'none';
     }
 }
 
